@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/CeadeS/pytorch_bio_transformations/branch/dev/graph/badge.svg?token=I11PUI5K0S)](https://codecov.io/gh/CeadeS/pytorch_bio_transformations)
 [![Perform tests](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/test.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/test.yml)
 [![Build and deploy docs](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/documentation.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/documentation.yml)
-[![Release](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/main.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/main.yml)
+[![Release](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/release_and_deploy.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/release_and_deploy.yml)
 
 # BioLearn: Biologically Inspired Neural Network Modifications
 
