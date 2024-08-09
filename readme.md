@@ -1,3 +1,8 @@
+[![License](https://img.shields.io/badge/license-MIT-blue)](https://opensource.org/licenses/mit)
+![PyPI](https://img.shields.io/pypi/v/pytorch_bio_transformations)
+[![tests](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/test.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/CeadeS/pytorch_bio_transformations/branch/dev/graph/badge.svg?token=I11PUI5K0S)](https://codecov.io/gh/CeadeS/pytorch_bio_transformations)
+
 # BioLearn: Biologically Inspired Neural Network Modifications
 
 ## Table of Contents
