@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 packages = ["bio_transformations"]
 [project]
 name = "pytorch_bio_transformations"
-version = "0.0.1"
+version = "0.0.4a"
 authors = [
   { name="Martin Hofmann", email="Martin.Hofmann@tu-ilmenau.de" },
 ]
