@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Bio Transformations &mdash; Bio Transformations 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Biological Concepts" href="concepts.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            Bio Transformations
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Biological Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_usage.html">Advanced Usage</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">bio_transformations</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Bio Transformations</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to Bio Transformations</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/CeadeS/BioLearn" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-bio-transformations">
+<h1>Welcome to Bio Transformations<a class="headerlink" href="#welcome-to-bio-transformations" title="Permalink to this heading"></a></h1>
+<p>Bio Transformations is a Python package that enhances artificial neural networks (ANNs) by incorporating biologically inspired mechanisms observed in biological neural networks (BNNs). Our goal is to improve the learning speed, prediction accuracy, and resilience of ANNs using concepts from neuroscience.</p>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading"></a></h2>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h3>
+<p>Install Bio Transformations using pip:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>bio_transformations
+</pre></div>
+</div>
+</section>
+<section id="basic-usage">
+<h3>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading"></a></h3>
+<p>Here’s a simple example to get you started:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">bio_transformations</span> <span class="kn">import</span> <span class="n">BioConverter</span>
+
+<span class="c1"># Define your model</span>
+<span class="k">class</span> <span class="nc">SimpleModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Create and convert your model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>
+    <span class="n">dampening_factor</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
+    <span class="n">crystal_thresh</span><span class="o">=</span><span class="mf">4.5e-05</span>
+<span class="p">)</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Use bio_model as you would a regular PyTorch model</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="key-concepts">
+<h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this heading"></a></h2>
+<p>Bio Transformations implements three key biologically inspired mechanisms:</p>
+<ol class="arabic simple">
+<li><p><strong>Diversity in synaptic plasticity</strong>: Not all synapses learn at the same rate.</p></li>
+<li><p><strong>Spontaneous spine remodeling</strong>: Synapses can form and disappear dynamically.</p></li>
+<li><p><strong>Multi-synaptic connectivity</strong>: Multiple connections can exist between neuron pairs.</p></li>
+</ol>
+<p>These concepts are implemented through various methods such as <cite>fuzzy_learning_rates()</cite>, <cite>rejuvenate_weights()</cite>, and <cite>add_weight_splitting_step()</cite>.</p>
+</section>
+<section id="contents">
+<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Biological Concepts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#synaptic-diversity">Synaptic Diversity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#homeostatic-plasticity">Homeostatic Plasticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#volume-dependent-plasticity">Volume-Dependent Plasticity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="concepts.html#dale-s-principle">Dale’s Principle</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials.html#basic-usage">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials.html#training-a-bio-transformed-model">Training a Bio-Transformed Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials.html#using-specific-bio-inspired-features">Using Specific Bio-Inspired Features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_usage.html">Advanced Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced_usage.html#customizing-bioconverter">Customizing BioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_usage.html#implementing-custom-activation-functions">Implementing Custom Activation Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_usage.html#selective-application-of-bio-inspired-features">Selective Application of Bio-Inspired Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_usage.html#extending-biomodule-with-custom-methods">Extending BioModule with Custom Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced_usage.html#monitoring-bio-inspired-modifications">Monitoring Bio-Inspired Modifications</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">bio_transformations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bio_transformations.html">bio_transformations package</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="about-the-project">
+<h2>About the Project<a class="headerlink" href="#about-the-project" title="Permalink to this heading"></a></h2>
+<p>Bio Transformations is based on the paper “Synaptic Diversity: Concept Transfer from Biological to Artificial Neural Networks” by Martin Hofmann, Moritz Franz Peter Becker, Christian Tetzlaff, and Patrick Mäder. Our package aims to bridge the gap between biological and artificial neural networks, potentially leading to more efficient and robust AI systems.</p>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="concepts.html" class="btn btn-neutral float-right" title="Biological Concepts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Your Name.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

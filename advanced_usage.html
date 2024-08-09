@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Usage &mdash; Bio Transformations 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="bio_transformations" href="modules.html" />
+    <link rel="prev" title="Tutorials" href="tutorials.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Bio Transformations
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Biological Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-bioconverter">Customizing BioConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementing-custom-activation-functions">Implementing Custom Activation Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#selective-application-of-bio-inspired-features">Selective Application of Bio-Inspired Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extending-biomodule-with-custom-methods">Extending BioModule with Custom Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-bio-inspired-modifications">Monitoring Bio-Inspired Modifications</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">bio_transformations</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Bio Transformations</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Advanced Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/advanced_usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="advanced-usage">
+<h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading"></a></h1>
+<p>This guide covers advanced topics and customization options for Bio Transformations. It’s intended for users who are already familiar with the basic usage of the package and want to explore its full capabilities.</p>
+<section id="customizing-bioconverter">
+<h2>Customizing BioConverter<a class="headerlink" href="#customizing-bioconverter" title="Permalink to this heading"></a></h2>
+<p>The <cite>BioConverter</cite> class accepts several parameters that allow you to fine-tune the bio-inspired modifications. Here’s an example of creating a <cite>BioConverter</cite> with custom settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bio_transformations</span> <span class="kn">import</span> <span class="n">BioConverter</span>
+
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+    <span class="n">dampening_factor</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+    <span class="n">crystal_thresh</span><span class="o">=</span><span class="mf">5e-05</span><span class="p">,</span>
+    <span class="n">rejuvenation_parameter_dre</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+    <span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">apply_dales_principle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">base_lr</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+    <span class="n">stability_factor</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
+    <span class="n">lr_variability</span><span class="o">=</span><span class="mf">0.15</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Refer to the API documentation for detailed explanations of each parameter.</p>
+</section>
+<section id="implementing-custom-activation-functions">
+<h2>Implementing Custom Activation Functions<a class="headerlink" href="#implementing-custom-activation-functions" title="Permalink to this heading"></a></h2>
+<p>You can implement custom activation functions for weight splitting. Here’s an example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">def</span> <span class="nf">custom_activation</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span>
+    <span class="n">weight_splitting_activation_function</span><span class="o">=</span><span class="n">custom_activation</span><span class="p">,</span>
+    <span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">2</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="selective-application-of-bio-inspired-features">
+<h2>Selective Application of Bio-Inspired Features<a class="headerlink" href="#selective-application-of-bio-inspired-features" title="Permalink to this heading"></a></h2>
+<p>You can selectively apply bio-inspired features to specific layers of your model:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CustomModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">CustomModel</span><span class="p">()</span>
+
+<span class="c1"># Mark fc3 to skip weight splitting</span>
+<span class="n">BioConverter</span><span class="o">.</span><span class="n">mark_skip_weight_splitting</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">fc3</span><span class="p">)</span>
+
+<span class="c1"># Convert the model</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="extending-biomodule-with-custom-methods">
+<h2>Extending BioModule with Custom Methods<a class="headerlink" href="#extending-biomodule-with-custom-methods" title="Permalink to this heading"></a></h2>
+<p>You can extend the <cite>BioModule</cite> class with your own bio-inspired methods:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bio_transformations.bio_module</span> <span class="kn">import</span> <span class="n">BioModule</span>
+
+<span class="k">class</span> <span class="nc">CustomBioModule</span><span class="p">(</span><span class="n">BioModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">custom_bio_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Your custom bio-inspired logic here</span>
+        <span class="k">pass</span>
+
+<span class="c1"># Update BioModule.exposed_functions to include your new method</span>
+<span class="n">BioModule</span><span class="o">.</span><span class="n">exposed_functions</span> <span class="o">+=</span> <span class="p">(</span><span class="s2">&quot;custom_bio_method&quot;</span><span class="p">,)</span>
+
+<span class="c1"># Use CustomBioModule in your BioConverter</span>
+<span class="k">class</span> <span class="nc">CustomBioConverter</span><span class="p">(</span><span class="n">BioConverter</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_bio_modulize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">)):</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s1">&#39;bio_mod&#39;</span><span class="p">,</span> <span class="n">CustomBioModule</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">bio_module_params</span><span class="p">))</span>
+
+<span class="c1"># Use your custom converter</span>
+<span class="n">custom_converter</span> <span class="o">=</span> <span class="n">CustomBioConverter</span><span class="p">()</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">custom_converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Now you can use your custom method</span>
+<span class="n">bio_model</span><span class="o">.</span><span class="n">custom_bio_method</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="monitoring-bio-inspired-modifications">
+<h2>Monitoring Bio-Inspired Modifications<a class="headerlink" href="#monitoring-bio-inspired-modifications" title="Permalink to this heading"></a></h2>
+<p>To monitor the effects of bio-inspired modifications during training:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MonitoredBioModule</span><span class="p">(</span><span class="n">BioModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_changes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">rejuvenate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">rejuvenate_weights</span><span class="p">()</span>
+        <span class="n">after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight_changes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">before</span> <span class="o">-</span> <span class="n">after</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+
+<span class="c1"># Use MonitoredBioModule in your BioConverter</span>
+<span class="c1"># ... (similar to the CustomBioModule example above)</span>
+
+<span class="c1"># After training, you can analyze the weight changes</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bio_model</span><span class="o">.</span><span class="n">fc1</span><span class="o">.</span><span class="n">bio_mod</span><span class="o">.</span><span class="n">weight_changes</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Weight Changes Due to Rejuvenation&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Rejuvenation Events&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Average Absolute Weight Change&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>These advanced usage examples should help you customize and extend Bio Transformations to suit your specific needs. Remember to refer to the API documentation for detailed information on each class and method.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tutorials.html" class="btn btn-neutral float-left" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="bio_transformations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Your Name.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

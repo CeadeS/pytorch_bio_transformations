@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bio_transformations package &mdash; Bio Transformations 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="bio_transformations" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Bio Transformations
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="concepts.html">Biological Concepts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced_usage.html">Advanced Usage</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">API Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">bio_transformations</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">bio_transformations package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key-components">Key Components</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bio-transformations-bio-converter-module">bio_transformations.bio_converter module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bio-transformations-bio-module-module">bio_transformations.bio_module module</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-contents">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Bio Transformations</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">bio_transformations</a></li>
+      <li class="breadcrumb-item active">bio_transformations package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/bio_transformations.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="bio-transformations-package">
+<h1>bio_transformations package<a class="headerlink" href="#bio-transformations-package" title="Permalink to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
+<p>The <cite>bio_transformations</cite> package implements biologically inspired modifications to artificial neural networks. It enhances the learning capabilities of neural networks by mimicking the plasticity and stability characteristics observed in biological synapses.</p>
+</section>
+<section id="key-components">
+<h2>Key Components<a class="headerlink" href="#key-components" title="Permalink to this heading"></a></h2>
+<ol class="arabic">
+<li><p><a class="reference internal" href="#bio-converter"><span class="std std-ref">BioConverter</span></a></p>
+<p>The main interface for converting standard PyTorch modules to bio-inspired versions.</p>
+</li>
+<li><p><a class="reference internal" href="#bio-module"><span class="std std-ref">BioModule</span></a></p>
+<p>The core class implementing biologically inspired modifications.</p>
+</li>
+</ol>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+<section id="bio-transformations-bio-converter-module">
+<span id="bio-converter"></span><h3>bio_transformations.bio_converter module<a class="headerlink" href="#bio-transformations-bio-converter-module" title="Permalink to this heading"></a></h3>
+<p>The <cite>BioConverter</cite> class is responsible for converting standard PyTorch modules to BioNet modules with bio-inspired modifications. It provides methods for:</p>
+<ul class="simple">
+<li><p>Converting entire model architectures</p></li>
+<li><p>Configuring bio-inspired parameters</p></li>
+<li><p>Applying weight splitting techniques</p></li>
+</ul>
+</section>
+<section id="bio-transformations-bio-module-module">
+<span id="bio-module"></span><h3>bio_transformations.bio_module module<a class="headerlink" href="#bio-transformations-bio-module-module" title="Permalink to this heading"></a></h3>
+<p>The <cite>BioModule</cite> class implements the core biologically inspired modifications. It includes the following key functions:</p>
+<section id="synaptic-plasticity-functions">
+<h4>Synaptic Plasticity Functions<a class="headerlink" href="#synaptic-plasticity-functions" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">volume_dependent_lr()</span></code>: Implements learning rates based on weight magnitude.</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">fuzzy_learning_rates()</span></code>: Applies diverse learning rates to individual synapses.</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">crystallize()</span></code>: Simulates synaptic stabilization over time.</p></li>
+</ul>
+</section>
+<section id="structural-plasticity-functions">
+<h4>Structural Plasticity Functions<a class="headerlink" href="#structural-plasticity-functions" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">rejuvenate_weights()</span></code>: Mimics spine turnover in biological networks.</p></li>
+</ul>
+</section>
+<section id="homeostatic-plasticity-functions">
+<h4>Homeostatic Plasticity Functions<a class="headerlink" href="#homeostatic-plasticity-functions" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">scale_grad()</span></code>: Implements synaptic scaling for overall network stability.</p></li>
+</ul>
+</section>
+<section id="additional-functions">
+<h4>Additional Functions<a class="headerlink" href="#additional-functions" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">l1_reg()</span></code>: Computes L1 regularization of module parameters.</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">enforce_dales_principle()</span></code>: Enforces Dale’s principle on module weights.</p></li>
+<li><p><code class="xref py py-func docutils literal notranslate"><span class="pre">dalian_network_initialization()</span></code>: Initializes network weights according to Dale’s principle.</p></li>
+</ul>
+<p>For detailed information on each function, please refer to the individual function documentation.</p>
+</section>
+<section id="extending-biomodule">
+<h4>Extending BioModule<a class="headerlink" href="#extending-biomodule" title="Permalink to this heading"></a></h4>
+<p>To add a new biologically motivated function:</p>
+<ol class="arabic simple">
+<li><p>Implement the new function in the <cite>BioModule</cite> class.</p></li>
+<li><p>Add the function name to the <cite>exposed_functions</cite> list.</p></li>
+<li><p>Update <cite>__init__</cite> methods if new parameters are required.</p></li>
+<li><p>Create a test case in <cite>test_biomodule.py</cite>.</p></li>
+<li><p>Update this documentation to include details about the new function.</p></li>
+</ol>
+</section>
+</section>
+</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Permalink to this heading"></a></h2>
+<p>For a practical guide on using these components, please refer to the <a class="reference internal" href="tutorials.html"><span class="doc">Tutorials</span></a> section.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="bio_transformations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Your Name.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
