@@ -59,8 +59,8 @@ pip install bio_transformations
 ### Option 3: From Source (For Development or Latest Changes)
 
 ```bash
-git clone https://github.com/CeadeS/BioLearn.git
-cd BioLearn
+git clone https://github.com/CeadeS/pytorch_bio_transformations
+cd pytorch_bio_transformations
 pip install -r requirements.txt
 pip install -e .
 ```
