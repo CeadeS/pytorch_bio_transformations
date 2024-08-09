@@ -2,7 +2,9 @@
 ![PyPI](https://img.shields.io/pypi/v/pytorch_bio_transformations)
 [![tests](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/test.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/CeadeS/pytorch_bio_transformations/branch/dev/graph/badge.svg?token=I11PUI5K0S)](https://codecov.io/gh/CeadeS/pytorch_bio_transformations)
-[![Deploy static content to Pages](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/deploy_docs.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/deploy_docs.yml)
+[![Perform tests](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/test.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/test.yml)
+[![Build and deploy docs](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/documentation.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/documentation.yml)
+[![Release](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/main.yml/badge.svg)](https://github.com/CeadeS/pytorch_bio_transformations/actions/workflows/main.yml)
 
 # BioLearn: Biologically Inspired Neural Network Modifications
 
