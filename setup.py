@@ -4,7 +4,7 @@ install_requires = open("requirements.txt", 'r').read().split('\n')
 install_requires = [str(ir) for ir in install_requires]
 
 setup(name='pytorch_bio_transformations', version='0.0.2',
-    description='Pytorch Biologically Motivated Transformations>', url='https://github.com/CeadeS/BioLearn',
+    description='Pytorch Biologically Motivated Transformations>', url='https://CeadeS.github.io/pytorch_bio_transformations"',
     author='Martin Hofmann', author_email='Martin.Hofmann@tu-ilmenau.de', license='MIT License',
     packages=find_packages(), install_requires=install_requires, python_requires=">=3",
     keywords="python, biomodule, pytorch",
