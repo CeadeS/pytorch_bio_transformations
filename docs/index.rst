@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-:github_url: https://github.com/CeadeS/BioLearn
+:github_url: https://github.com/CeadeS/pytorch_bio_transformations/
 
 Welcome to Bio Transformations
 ==============================
@@ -20,7 +20,7 @@ Install Bio Transformations using pip:
 
 .. code-block:: bash
 
-   pip install bio_transformations
+   pip install pytorch_bio_transformations
 
 Basic Usage
 ^^^^^^^^^^^
