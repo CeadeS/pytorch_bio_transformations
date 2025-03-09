@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Advanced Usage &mdash; Bio Transformations 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -49,11 +47,15 @@
 <li class="toctree-l1"><a class="reference internal" href="concepts.html">Biological Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#customizing-bioconverter">Customizing BioConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#implementing-custom-activation-functions">Implementing Custom Activation Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-bioconverter-with-comprehensive-configuration">Customizing BioConverter with Comprehensive Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-and-updating-bioconverter-from-dictionary">Creating and Updating BioConverter from Dictionary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detailed-guide-to-fuzzy-learning-rate-distributions">Detailed Guide to Fuzzy Learning Rate Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#implementing-custom-activation-functions-for-weight-splitting">Implementing Custom Activation Functions for Weight Splitting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#selective-application-of-bio-inspired-features">Selective Application of Bio-Inspired Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#extending-biomodule-with-custom-methods">Extending BioModule with Custom Methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#monitoring-bio-inspired-modifications">Monitoring Bio-Inspired Modifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-custom-biomodule-extension">Creating a Custom BioModule Extension</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#combining-bio-transformations-with-other-pytorch-features">Combining Bio Transformations with Other PyTorch Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-optimization-tips">Performance Optimization Tips</a></li>
 </ul>
 </li>
 </ul>
@@ -89,52 +91,197 @@
   <section id="advanced-usage">
 <h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading"></a></h1>
 <p>This guide covers advanced topics and customization options for Bio Transformations. It’s intended for users who are already familiar with the basic usage of the package and want to explore its full capabilities.</p>
-<section id="customizing-bioconverter">
-<h2>Customizing BioConverter<a class="headerlink" href="#customizing-bioconverter" title="Permalink to this heading"></a></h2>
-<p>The <cite>BioConverter</cite> class accepts several parameters that allow you to fine-tune the bio-inspired modifications. Here’s an example of creating a <cite>BioConverter</cite> with custom settings:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bio_transformations</span> <span class="kn">import</span> <span class="n">BioConverter</span>
+<section id="customizing-bioconverter-with-comprehensive-configuration">
+<h2>Customizing BioConverter with Comprehensive Configuration<a class="headerlink" href="#customizing-bioconverter-with-comprehensive-configuration" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">BioConfig</span></code> class provides extensive configuration options for fine-tuning the bio-inspired modifications. Here’s an example of creating a <code class="docutils literal notranslate"><span class="pre">BioConverter</span></code> with custom settings across all features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioConverter</span><span class="p">,</span> <span class="n">BioConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations.bio_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Distribution</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
 
+<span class="c1"># Comprehensive configuration</span>
 <span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span>
-    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-    <span class="n">dampening_factor</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-    <span class="n">crystal_thresh</span><span class="o">=</span><span class="mf">5e-05</span><span class="p">,</span>
-    <span class="n">rejuvenation_parameter_dre</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
-    <span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-    <span class="n">apply_dales_principle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">base_lr</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-    <span class="n">stability_factor</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>
-    <span class="n">lr_variability</span><span class="o">=</span><span class="mf">0.15</span>
+    <span class="c1"># Fuzzy learning rate parameters</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>        <span class="c1"># Controls the variability in learning rates</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">,</span> <span class="c1"># Distribution strategy for learning rates</span>
+    <span class="n">fuzzy_lr_dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>                     <span class="c1"># Whether to update learning rates during training</span>
+    <span class="n">fuzzy_lr_min</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>                          <span class="c1"># Minimum value for learning rates</span>
+    <span class="n">fuzzy_lr_max</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>                          <span class="c1"># Maximum value for learning rates</span>
+    <span class="n">fuzzy_lr_update_freq</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>                    <span class="c1"># How often to update temporal rates</span>
+    <span class="n">fuzzy_lr_decay</span><span class="o">=</span><span class="mf">0.98</span><span class="p">,</span>                       <span class="c1"># Decay factor for temporal rates</span>
+
+    <span class="c1"># Synaptic stabilization parameters</span>
+    <span class="n">dampening_factor</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>                      <span class="c1"># Factor for reducing learning rates during crystallization</span>
+    <span class="n">crystal_thresh</span><span class="o">=</span><span class="mf">5e-05</span><span class="p">,</span>                      <span class="c1"># Threshold for identifying weights to crystallize</span>
+
+    <span class="c1"># Structural plasticity parameters</span>
+    <span class="n">rejuvenation_parameter_dre</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>           <span class="c1"># Controls the rate of weight rejuvenation</span>
+
+    <span class="c1"># Multi-synaptic connectivity parameters</span>
+    <span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>                  <span class="c1"># Number of sub-synapses per connection (0 = disabled)</span>
+    <span class="n">weight_splitting_activation_function</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>  <span class="c1"># Activation for weight splitting</span>
+
+    <span class="c1"># Volume-dependent plasticity parameters</span>
+    <span class="n">base_lr</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>                              <span class="c1"># Base learning rate for volume-dependent plasticity</span>
+    <span class="n">stability_factor</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span>                      <span class="c1"># Controls how quickly stability increases with weight size</span>
+    <span class="n">lr_variability</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>                       <span class="c1"># Controls the amount of variability in learning rates</span>
+
+    <span class="c1"># Dale&#39;s principle parameters</span>
+    <span class="n">apply_dales_principle</span><span class="o">=</span><span class="kc">True</span>                 <span class="c1"># Whether to enforce Dale&#39;s principle</span>
 <span class="p">)</span>
+
+<span class="c1"># Convert a model with this comprehensive configuration</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Refer to the API documentation for detailed explanations of each parameter.</p>
 </section>
-<section id="implementing-custom-activation-functions">
-<h2>Implementing Custom Activation Functions<a class="headerlink" href="#implementing-custom-activation-functions" title="Permalink to this heading"></a></h2>
-<p>You can implement custom activation functions for weight splitting. Here’s an example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<section id="creating-and-updating-bioconverter-from-dictionary">
+<h2>Creating and Updating BioConverter from Dictionary<a class="headerlink" href="#creating-and-updating-bioconverter-from-dictionary" title="Permalink to this heading"></a></h2>
+<p>You can create a <code class="docutils literal notranslate"><span class="pre">BioConverter</span></code> from a dictionary of parameters or update an existing converter:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create from dictionary</span>
+<span class="n">config_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;fuzzy_learning_rate_factor_nu&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="s1">&#39;dampening_factor&#39;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+    <span class="s1">&#39;crystal_thresh&#39;</span><span class="p">:</span> <span class="mf">5e-05</span><span class="p">,</span>
+    <span class="s1">&#39;rejuvenation_parameter_dre&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span>
+    <span class="s1">&#39;weight_splitting_Gamma&#39;</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">}</span>
 
-<span class="k">def</span> <span class="nf">custom_activation</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">config_dict</span><span class="p">)</span>
 
-<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span>
-    <span class="n">weight_splitting_activation_function</span><span class="o">=</span><span class="n">custom_activation</span><span class="p">,</span>
-    <span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">2</span>
+<span class="c1"># Update an existing converter</span>
+<span class="n">converter</span><span class="o">.</span><span class="n">update_config</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">LOGNORMAL</span><span class="p">,</span>
+    <span class="n">fuzzy_lr_dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">apply_dales_principle</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
+
+<span class="c1"># Get the current configuration</span>
+<span class="n">current_config</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">get_config</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">current_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="detailed-guide-to-fuzzy-learning-rate-distributions">
+<h2>Detailed Guide to Fuzzy Learning Rate Distributions<a class="headerlink" href="#detailed-guide-to-fuzzy-learning-rate-distributions" title="Permalink to this heading"></a></h2>
+<p>Bio Transformations offers multiple distribution strategies for fuzzy learning rates, each with unique characteristics:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations.bio_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Distribution</span>
+
+<span class="c1"># 1. BASELINE - No variability (all parameters = 1.0)</span>
+<span class="n">baseline_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span><span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">BASELINE</span><span class="p">)</span>
+<span class="c1"># Good for establishing a performance baseline without diversity</span>
+
+<span class="c1"># 2. UNIFORM - Uniform distribution around 1.0</span>
+<span class="n">uniform_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">UNIFORM</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>  <span class="c1"># Controls the range: [1-0.16, 1+0.16]</span>
+<span class="p">)</span>
+<span class="c1"># Simple, predictable variability across all weights</span>
+
+<span class="c1"># 3. NORMAL - Normal distribution centered at 1.0</span>
+<span class="n">normal_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>  <span class="c1"># Standard deviation</span>
+<span class="p">)</span>
+<span class="c1"># Bell-curve distribution with most values near 1.0</span>
+
+<span class="c1"># 4. LOGNORMAL - Log-normal with mean 1.0</span>
+<span class="n">lognormal_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">LOGNORMAL</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>  <span class="c1"># Controls the shape</span>
+<span class="p">)</span>
+<span class="c1"># Skewed distribution with long tail, all positive values</span>
+
+<span class="c1"># 5. GAMMA - Gamma distribution (positive, skewed)</span>
+<span class="n">gamma_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">GAMMA</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>  <span class="c1"># Controls the shape</span>
+<span class="p">)</span>
+<span class="c1"># Models continuous waiting times, good for activity-dependent processes</span>
+
+<span class="c1"># 6. BETA - Beta distribution scaled to [1-nu, 1+nu]</span>
+<span class="n">beta_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">BETA</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>  <span class="c1"># Controls the shape and range</span>
+<span class="p">)</span>
+<span class="c1"># Flexible distribution bounded on both sides</span>
+
+<span class="c1"># 7. LAYER_ADAPTIVE - Layer-dependent variability</span>
+<span class="n">layer_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">LAYER_ADAPTIVE</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>  <span class="c1"># Base variability</span>
+<span class="p">)</span>
+<span class="c1"># Early layers get more variability than later layers</span>
+<span class="c1"># Mimics biological observation of layer-specific plasticity in cortex</span>
+
+<span class="c1"># 8. WEIGHT_ADAPTIVE - Weight-dependent scaling</span>
+<span class="n">weight_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">WEIGHT_ADAPTIVE</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>  <span class="c1"># Base variability</span>
+<span class="p">)</span>
+<span class="c1"># Smaller weights get more variability than larger weights</span>
+<span class="c1"># Mimics size-dependent plasticity of dendritic spines</span>
+
+<span class="c1"># 9. TEMPORAL - Evolves over time</span>
+<span class="n">temporal_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">TEMPORAL</span><span class="p">,</span>
+    <span class="n">fuzzy_lr_dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>               <span class="c1"># Must be True for temporal evolution</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>  <span class="c1"># Base variability</span>
+    <span class="n">fuzzy_lr_update_freq</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>             <span class="c1"># Update every 10 steps</span>
+    <span class="n">fuzzy_lr_decay</span><span class="o">=</span><span class="mf">0.95</span>                  <span class="c1"># Decay factor for temporal rates</span>
+<span class="p">)</span>
+<span class="c1"># Learning rates change during training, mimicking developmental changes</span>
+
+<span class="c1"># 10. ACTIVITY - Based on neuron activation patterns</span>
+<span class="n">activity_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">ACTIVITY</span><span class="p">,</span>
+    <span class="n">fuzzy_lr_dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>               <span class="c1"># Must be True for activity tracking</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>   <span class="c1"># Base variability</span>
+<span class="p">)</span>
+<span class="c1"># Adjusts learning rates based on neuron activity</span>
+<span class="c1"># More active neurons become more stable (less variable)</span>
+</pre></div>
+</div>
+</section>
+<section id="implementing-custom-activation-functions-for-weight-splitting">
+<h2>Implementing Custom Activation Functions for Weight Splitting<a class="headerlink" href="#implementing-custom-activation-functions-for-weight-splitting" title="Permalink to this heading"></a></h2>
+<p>You can implement custom activation functions for weight splitting to modify how multi-synaptic connections behave:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+
+<span class="c1"># Custom activation: Leaky ReLU with specific negative slope</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">custom_leaky_activation</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">leaky_relu</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">negative_slope</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="c1"># Custom activation: Sigmoid with scaling</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">custom_sigmoid_activation</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="mf">2.0</span>  <span class="c1"># Scale output range to [0, 2]</span>
+
+<span class="c1"># Custom activation: Tanh with gain</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">custom_tanh_activation</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">)</span>  <span class="c1"># Apply gain before tanh</span>
+
+<span class="c1"># Use the custom activation in BioConverter</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span>
+    <span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>  <span class="c1"># Enable weight splitting</span>
+    <span class="n">weight_splitting_activation_function</span><span class="o">=</span><span class="n">custom_leaky_activation</span>
+<span class="p">)</span>
+
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="selective-application-of-bio-inspired-features">
 <h2>Selective Application of Bio-Inspired Features<a class="headerlink" href="#selective-application-of-bio-inspired-features" title="Permalink to this heading"></a></h2>
 <p>You can selectively apply bio-inspired features to specific layers of your model:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CustomModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">CustomModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc3</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -142,71 +289,312 @@
 <span class="n">model</span> <span class="o">=</span> <span class="n">CustomModel</span><span class="p">()</span>
 
 <span class="c1"># Mark fc3 to skip weight splitting</span>
-<span class="n">BioConverter</span><span class="o">.</span><span class="n">mark_skip_weight_splitting</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">fc3</span><span class="p">)</span>
+<span class="c1"># This is particularly useful for output layers where</span>
+<span class="c1"># changing the output dimension would affect the task</span>
+<span class="n">BioConverter</span><span class="o">.</span><span class="n">set_last_module_token_for_module</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">fc3</span><span class="p">)</span>
 
 <span class="c1"># Convert the model</span>
 <span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="extending-biomodule-with-custom-methods">
-<h2>Extending BioModule with Custom Methods<a class="headerlink" href="#extending-biomodule-with-custom-methods" title="Permalink to this heading"></a></h2>
-<p>You can extend the <cite>BioModule</cite> class with your own bio-inspired methods:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bio_transformations.bio_module</span> <span class="kn">import</span> <span class="n">BioModule</span>
+<section id="monitoring-bio-inspired-modifications">
+<h2>Monitoring Bio-Inspired Modifications<a class="headerlink" href="#monitoring-bio-inspired-modifications" title="Permalink to this heading"></a></h2>
+<p>To monitor the effects of bio-inspired modifications during training:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MonitoredModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">CustomBioModule</span><span class="p">(</span><span class="n">BioModule</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">MonitoredModel</span><span class="p">()</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">()</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Track changes during training</span>
+<span class="n">crystallized_weights_history</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">rejuvenated_weights_history</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">learning_rate_variability_history</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># Training loop with monitoring</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="c1"># Forward and backward pass</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="c1"># Get pre-modification weights for comparison</span>
+    <span class="n">pre_weights_fc1</span> <span class="o">=</span> <span class="n">bio_model</span><span class="o">.</span><span class="n">fc1</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+    <span class="c1"># Apply bio-inspired modifications</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">crystallize</span><span class="p">()</span>
+
+    <span class="c1"># Track crystallized weights after each epoch</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="c1"># Count crystallized weights (those with reduced learning rates)</span>
+        <span class="n">crystallized_count</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">bio_model</span><span class="o">.</span><span class="n">fc1</span><span class="o">.</span><span class="n">bio_mod</span><span class="o">.</span><span class="n">fuzzy_learning_rate_parameters</span> <span class="o">&lt;</span> <span class="mf">0.9</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">crystallized_weights_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">crystallized_count</span><span class="p">)</span>
+
+        <span class="c1"># Check learning rate variability</span>
+        <span class="n">lr_variability</span> <span class="o">=</span> <span class="n">bio_model</span><span class="o">.</span><span class="n">fc1</span><span class="o">.</span><span class="n">bio_mod</span><span class="o">.</span><span class="n">fuzzy_learning_rate_parameters</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">learning_rate_variability_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lr_variability</span><span class="p">)</span>
+
+    <span class="c1"># Apply other modifications</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="c1"># Periodically apply rejuvenation</span>
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Get pre-rejuvenation weights</span>
+        <span class="n">pre_rejuv_weights</span> <span class="o">=</span> <span class="n">bio_model</span><span class="o">.</span><span class="n">fc1</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+        <span class="c1"># Apply rejuvenation</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">rejuvenate_weights</span><span class="p">()</span>
+
+        <span class="c1"># Count rejuvenated weights</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">rejuvenated_count</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">bio_model</span><span class="o">.</span><span class="n">fc1</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="n">pre_rejuv_weights</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">1e-6</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">rejuvenated_weights_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rejuvenated_count</span><span class="p">)</span>
+
+<span class="c1"># Plot the results</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">crystallized_weights_history</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Crystallized Weights Over Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of Crystallized Weights&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">rejuvenated_weights_history</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Rejuvenated Weights Over Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Number of Rejuvenated Weights&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">learning_rate_variability_history</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Learning Rate Variability Over Time&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Epoch&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Standard Deviation of Learning Rates&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-a-custom-biomodule-extension">
+<h2>Creating a Custom BioModule Extension<a class="headerlink" href="#creating-a-custom-biomodule-extension" title="Permalink to this heading"></a></h2>
+<p>You can extend the <code class="docutils literal notranslate"><span class="pre">BioModule</span></code> class with your own bio-inspired methods:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations.bio_module</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioModule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioConverter</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomBioModule</span><span class="p">(</span><span class="n">BioModule</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Add custom state variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span><span class="s1">&#39;activity_history&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">custom_bio_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># Your custom bio-inspired logic here</span>
-        <span class="k">pass</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">custom_bio_method</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Custom bio-inspired plasticity rule that scales weights</span>
+<span class="sd">        based on a simulated neuromodulator presence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="c1"># Simulate neuromodulator concentration varying over time</span>
+            <span class="n">neuromodulator</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">/</span> <span class="mi">10</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># Scale weights based on neuromodulator concentration</span>
+            <span class="n">scale_factor</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">neuromodulator</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span> <span class="o">*=</span> <span class="n">scale_factor</span>
+
+            <span class="c1"># Track activity for this step</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_step</span> <span class="o">%</span> <span class="mi">10</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">activity_history</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">neuromodulator</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
 
 <span class="c1"># Update BioModule.exposed_functions to include your new method</span>
-<span class="n">BioModule</span><span class="o">.</span><span class="n">exposed_functions</span> <span class="o">+=</span> <span class="p">(</span><span class="s2">&quot;custom_bio_method&quot;</span><span class="p">,)</span>
+<span class="n">CustomBioModule</span><span class="o">.</span><span class="n">exposed_functions</span> <span class="o">=</span> <span class="n">BioModule</span><span class="o">.</span><span class="n">exposed_functions</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;custom_bio_method&quot;</span><span class="p">,)</span>
 
-<span class="c1"># Use CustomBioModule in your BioConverter</span>
-<span class="k">class</span> <span class="nc">CustomBioConverter</span><span class="p">(</span><span class="n">BioConverter</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">_bio_modulize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
+<span class="c1"># Create a custom BioConverter that uses your extended BioModule</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomBioConverter</span><span class="p">(</span><span class="n">BioConverter</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_bio_modulize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">)):</span>
-            <span class="n">module</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s1">&#39;bio_mod&#39;</span><span class="p">,</span> <span class="n">CustomBioModule</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">bio_module_params</span><span class="p">))</span>
+            <span class="n">module</span><span class="o">.</span><span class="n">add_module</span><span class="p">(</span><span class="s1">&#39;bio_mod&#39;</span><span class="p">,</span> <span class="n">CustomBioModule</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">module</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">))</span>
 
 <span class="c1"># Use your custom converter</span>
 <span class="n">custom_converter</span> <span class="o">=</span> <span class="n">CustomBioConverter</span><span class="p">()</span>
 <span class="n">bio_model</span> <span class="o">=</span> <span class="n">custom_converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
-<span class="c1"># Now you can use your custom method</span>
-<span class="n">bio_model</span><span class="o">.</span><span class="n">custom_bio_method</span><span class="p">()</span>
+<span class="c1"># Training loop with custom method</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="c1"># Standard training steps</span>
+    <span class="c1"># ...</span>
+
+    <span class="c1"># Apply custom bio method</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">custom_bio_method</span><span class="p">()</span>
+
+    <span class="c1"># Continue with other modifications</span>
+    <span class="c1"># ...</span>
 </pre></div>
 </div>
 </section>
-<section id="monitoring-bio-inspired-modifications">
-<h2>Monitoring Bio-Inspired Modifications<a class="headerlink" href="#monitoring-bio-inspired-modifications" title="Permalink to this heading"></a></h2>
-<p>To monitor the effects of bio-inspired modifications during training:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MonitoredBioModule</span><span class="p">(</span><span class="n">BioModule</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weight_changes</span> <span class="o">=</span> <span class="p">[]</span>
+<section id="combining-bio-transformations-with-other-pytorch-features">
+<h2>Combining Bio Transformations with Other PyTorch Features<a class="headerlink" href="#combining-bio-transformations-with-other-pytorch-features" title="Permalink to this heading"></a></h2>
+<p>Bio Transformations can be combined with other PyTorch features like DataParallel for multi-GPU training or TorchScript for deployment:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.nn.parallel</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataParallel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioConverter</span>
 
-    <span class="k">def</span> <span class="nf">rejuvenate_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">before</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">rejuvenate_weights</span><span class="p">()</span>
-        <span class="n">after</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent</span><span class="p">()</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weight_changes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">before</span> <span class="o">-</span> <span class="n">after</span><span class="p">)</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
+<span class="c1"># Create and convert model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">YourModel</span><span class="p">()</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">()</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
-<span class="c1"># Use MonitoredBioModule in your BioConverter</span>
-<span class="c1"># ... (similar to the CustomBioModule example above)</span>
+<span class="c1"># Wrap with DataParallel for multi-GPU training</span>
+<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">bio_model</span> <span class="o">=</span> <span class="n">DataParallel</span><span class="p">(</span><span class="n">bio_model</span><span class="p">)</span>
 
-<span class="c1"># After training, you can analyze the weight changes</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">bio_model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bio_model</span><span class="o">.</span><span class="n">fc1</span><span class="o">.</span><span class="n">bio_mod</span><span class="o">.</span><span class="n">weight_changes</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Weight Changes Due to Rejuvenation&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Rejuvenation Events&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Average Absolute Weight Change&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="c1"># Standard training loop</span>
+<span class="k">for</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+    <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">inputs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">targets</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="c1"># For DataParallel models, we need to access the module attribute</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">bio_model</span><span class="p">,</span> <span class="n">DataParallel</span><span class="p">):</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">volume_dependent_lr</span><span class="p">()</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">crystallize</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">volume_dependent_lr</span><span class="p">()</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">crystallize</span><span class="p">()</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="c1"># Export with TorchScript</span>
+<span class="c1"># Note: After conversion to TorchScript, bio-inspired methods</span>
+<span class="c1"># can no longer be called, so this is for deployment only</span>
+<span class="n">scripted_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">script</span><span class="p">(</span><span class="n">bio_model</span><span class="p">)</span>
+<span class="n">scripted_model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;bio_model_scripted.pt&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="performance-optimization-tips">
+<h2>Performance Optimization Tips<a class="headerlink" href="#performance-optimization-tips" title="Permalink to this heading"></a></h2>
+<p>Here are some tips to optimize performance when using Bio Transformations:</p>
+<ol class="arabic">
+<li><p><strong>Selective Application of Bio-Inspired Methods</strong></p>
+<p>Not all bio-inspired methods need to be applied at every iteration. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Instead of applying everything every iteration:</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">volume_dependent_lr</span><span class="p">()</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">crystallize</span><span class="p">()</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">rejuvenate_weights</span><span class="p">()</span>  <span class="c1"># Expensive operation</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+<span class="c1"># Consider selective application:</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="c1"># Apply these every iteration</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>
+
+    <span class="c1"># Apply some methods less frequently</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">crystallize</span><span class="p">()</span>
+
+    <span class="c1"># Apply expensive operations very selectively</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">rejuvenate_weights</span><span class="p">()</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Use Non-Dynamic Distributions When Possible</strong></p>
+<p>Dynamic distributions require updates during training and may be more computationally expensive:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># More efficient (no updates required during training):</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">,</span>
+    <span class="n">fuzzy_lr_dynamic</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># Less efficient (requires updates during training):</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">TEMPORAL</span><span class="p">,</span>
+    <span class="n">fuzzy_lr_dynamic</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Batch Processing for Activity-Dependent Learning</strong></p>
+<p>When using activity-dependent learning rates, process in batches rather than single examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Process entire batches (more efficient):</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">inputs_batch</span><span class="p">)</span>  <span class="c1"># inputs_batch shape: [batch_size, features]</span>
+<span class="n">bio_model</span><span class="o">.</span><span class="n">update_fuzzy_learning_rates</span><span class="p">(</span><span class="n">inputs_batch</span><span class="p">)</span>
+
+<span class="c1"># Avoid processing individual examples (less efficient):</span>
+<span class="k">for</span> <span class="n">single_input</span> <span class="ow">in</span> <span class="n">inputs_batch</span><span class="p">:</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">single_input</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">update_fuzzy_learning_rates</span><span class="p">(</span><span class="n">single_input</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Consider Model Size vs. Weight Splitting</strong></p>
+<p>Weight splitting increases memory usage and computation. For large models, consider using smaller values:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># For smaller models, more splitting might be fine:</span>
+<span class="n">small_model_converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="c1"># For larger models, use less splitting or disable it:</span>
+<span class="n">large_model_converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Less splitting</span>
+<span class="n">very_large_model_converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Disabled</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Adjust Bio-Inspired Parameters Based on Network Size</strong></p>
+<p>Larger networks may require different parameter settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># For small networks:</span>
+<span class="n">small_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>
+    <span class="n">rejuvenation_parameter_dre</span><span class="o">=</span><span class="mf">8.0</span>
+<span class="p">)</span>
+
+<span class="c1"># For large networks, use more conservative settings:</span>
+<span class="n">large_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>  <span class="c1"># Less variability</span>
+    <span class="n">rejuvenation_parameter_dre</span><span class="o">=</span><span class="mf">12.0</span>     <span class="c1"># Less aggressive rejuvenation</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
 <p>These advanced usage examples should help you customize and extend Bio Transformations to suit your specific needs. Remember to refer to the API documentation for detailed information on each class and method.</p>
 </section>
 </section>

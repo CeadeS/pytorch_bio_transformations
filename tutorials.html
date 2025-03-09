@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tutorials &mdash; Bio Transformations 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -50,12 +48,18 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorials</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic Usage</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#converting-a-simple-model">Converting a Simple Model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-the-bio-inspired-features">Customizing the Bio-inspired Features</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#training-a-bio-transformed-model">Training a Bio-Transformed Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#using-specific-bio-inspired-features">Using Specific Bio-Inspired Features</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#applying-fuzzy-learning-rates">Applying Fuzzy Learning Rates</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#rejuvenating-weights">Rejuvenating Weights</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-different-distribution-strategies">Using Different Distribution Strategies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-activity-dependent-learning-rates">Using Activity-Dependent Learning Rates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#applying-dale-s-principle">Applying Dale’s Principle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-bio-transformations-with-cnns">Using Bio Transformations with CNNs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-common-issues">Troubleshooting Common Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#runtimeerror-no-gradients-found-for-the-weights">RuntimeError: “No gradients found for the weights”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#valueerror-weight-splitting-gamma-must-evenly-divide-the-number-of-features">ValueError: “weight_splitting_Gamma must evenly divide the number of features”</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attributeerror-can-not-enforce-dales-principle-without-apply-dales-principle-set-true">AttributeError: “Can not enforce dales principle without apply_dales_principle set True”</a></li>
 </ul>
 </li>
 </ul>
@@ -99,30 +103,26 @@
 <section id="converting-a-simple-model">
 <h3>Converting a Simple Model<a class="headerlink" href="#converting-a-simple-model" title="Permalink to this heading"></a></h3>
 <p>In this tutorial, we’ll convert a simple PyTorch model to use Bio Transformations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
-<span class="kn">from</span> <span class="nn">bio_transformations</span> <span class="kn">import</span> <span class="n">BioConverter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioConverter</span>
 
 <span class="c1"># Define a simple model</span>
-<span class="k">class</span> <span class="nc">SimpleModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleModel</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
 <span class="c1"># Create an instance of the model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
 
-<span class="c1"># Create a BioConverter</span>
-<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span>
-    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>
-    <span class="n">dampening_factor</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>
-    <span class="n">crystal_thresh</span><span class="o">=</span><span class="mf">4.5e-05</span>
-<span class="p">)</span>
+<span class="c1"># Create a BioConverter with default parameters</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">()</span>
 
 <span class="c1"># Convert the model</span>
 <span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -134,11 +134,29 @@
 </pre></div>
 </div>
 </section>
+<section id="customizing-the-bio-inspired-features">
+<h3>Customizing the Bio-inspired Features<a class="headerlink" href="#customizing-the-bio-inspired-features" title="Permalink to this heading"></a></h3>
+<p>You can customize the bio-inspired features by passing parameters to the BioConverter.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a BioConverter with custom parameters</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span><span class="p">,</span>  <span class="c1"># Controls the diversity in learning rates</span>
+    <span class="n">dampening_factor</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span>                <span class="c1"># Controls the stability increase during crystallization</span>
+    <span class="n">crystal_thresh</span><span class="o">=</span><span class="mf">4.5e-05</span><span class="p">,</span>              <span class="c1"># Threshold for identifying weights to crystallize</span>
+    <span class="n">rejuvenation_parameter_dre</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>      <span class="c1"># Controls the rate of weight rejuvenation</span>
+    <span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>            <span class="c1"># Number of sub-synapses per connection (0 = disabled)</span>
+    <span class="n">apply_dales_principle</span><span class="o">=</span><span class="kc">False</span>          <span class="c1"># Whether to enforce Dale&#39;s principle</span>
+<span class="p">)</span>
+
+<span class="c1"># Convert the model with custom parameters</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="training-a-bio-transformed-model">
 <h2>Training a Bio-Transformed Model<a class="headerlink" href="#training-a-bio-transformed-model" title="Permalink to this heading"></a></h2>
 <p>Here’s how to train a model using Bio Transformations:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.optim</span> <span class="k">as</span> <span class="nn">optim</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">optim</span>
 
 <span class="c1"># Assume we have our bio_model from the previous example</span>
 
@@ -146,49 +164,213 @@
 <span class="n">criterion</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MSELoss</span><span class="p">()</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">bio_model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
 
+<span class="c1"># Training data (example)</span>
+<span class="n">x_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
 <span class="c1"># Training loop</span>
 <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>  <span class="c1"># 100 epochs</span>
-    <span class="c1"># Assume we have some training data x_train, y_train</span>
+    <span class="c1"># Forward pass</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
     <span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
     <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
     <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
 
     <span class="c1"># Apply bio-inspired modifications</span>
-    <span class="n">bio_model</span><span class="o">.</span><span class="n">volume_dependent_lr</span><span class="p">()</span>
-    <span class="n">bio_model</span><span class="o">.</span><span class="n">crystallize</span><span class="p">()</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">volume_dependent_lr</span><span class="p">()</span>   <span class="c1"># Adjust learning rates based on weight size</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>  <span class="c1"># Apply diverse learning rates</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">crystallize</span><span class="p">()</span>           <span class="c1"># Stabilize well-optimized weights</span>
 
+    <span class="c1"># Update weights</span>
     <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="c1"># Periodically apply weight rejuvenation (e.g., every 10 epochs)</span>
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">bio_model</span><span class="o">.</span><span class="n">rejuvenate_weights</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch [</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">/100], Loss: </span><span class="si">{</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="using-specific-bio-inspired-features">
-<h2>Using Specific Bio-Inspired Features<a class="headerlink" href="#using-specific-bio-inspired-features" title="Permalink to this heading"></a></h2>
-<section id="applying-fuzzy-learning-rates">
-<h3>Applying Fuzzy Learning Rates<a class="headerlink" href="#applying-fuzzy-learning-rates" title="Permalink to this heading"></a></h3>
-<p>To use fuzzy learning rates:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># During training</span>
-<span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
-<span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
-<span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+<section id="using-different-distribution-strategies">
+<h2>Using Different Distribution Strategies<a class="headerlink" href="#using-different-distribution-strategies" title="Permalink to this heading"></a></h2>
+<p>Bio Transformations supports various distribution strategies for fuzzy learning rates:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioConverter</span><span class="p">,</span> <span class="n">BioConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations.bio_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Distribution</span>
 
-<span class="c1"># Apply fuzzy learning rates</span>
-<span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>
+<span class="c1"># Create a model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
 
-<span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+<span class="c1"># Create a BioConverter with Normal distribution</span>
+<span class="n">normal_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>  <span class="c1"># Standard deviation for normal distribution</span>
+<span class="p">)</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">normal_config</span><span class="p">)</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Train with normal distribution (just like previous example)</span>
+<span class="c1"># ...</span>
+
+<span class="c1"># Create a BioConverter with Weight-adaptive distribution</span>
+<span class="n">weight_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">WEIGHT_ADAPTIVE</span><span class="p">,</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>
+<span class="p">)</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">weight_config</span><span class="p">)</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Train with weight-adaptive distribution</span>
+<span class="c1"># (smaller weights get more variability than larger weights)</span>
+<span class="c1"># ...</span>
 </pre></div>
 </div>
 </section>
-<section id="rejuvenating-weights">
-<h3>Rejuvenating Weights<a class="headerlink" href="#rejuvenating-weights" title="Permalink to this heading"></a></h3>
-<p>To rejuvenate weights:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Periodically during training, e.g., every 10 epochs</span>
-<span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">bio_model</span><span class="o">.</span><span class="n">rejuvenate_weights</span><span class="p">()</span>
+<section id="using-activity-dependent-learning-rates">
+<h2>Using Activity-Dependent Learning Rates<a class="headerlink" href="#using-activity-dependent-learning-rates" title="Permalink to this heading"></a></h2>
+<p>For activity-dependent learning rates, you need to pass the input tensor to the update_fuzzy_learning_rates method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioConverter</span><span class="p">,</span> <span class="n">BioConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations.bio_config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Distribution</span>
+
+<span class="c1"># Create a model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
+
+<span class="c1"># Create a BioConverter with Activity-dependent distribution</span>
+<span class="n">activity_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">fuzzy_lr_distribution</span><span class="o">=</span><span class="n">Distribution</span><span class="o">.</span><span class="n">ACTIVITY</span><span class="p">,</span>
+    <span class="n">fuzzy_lr_dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Important: must be True for activity-dependent rates</span>
+    <span class="n">fuzzy_learning_rate_factor_nu</span><span class="o">=</span><span class="mf">0.16</span>
+<span class="p">)</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">activity_config</span><span class="p">)</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="c1"># Forward pass</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>  <span class="c1"># Pass input through the model</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="c1"># Update fuzzy learning rates based on activity</span>
+    <span class="c1"># This reads the activation patterns from the last forward pass</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">update_fuzzy_learning_rates</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+
+    <span class="c1"># Apply other bio-inspired modifications</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="applying-dale-s-principle">
+<h2>Applying Dale’s Principle<a class="headerlink" href="#applying-dale-s-principle" title="Permalink to this heading"></a></h2>
+<p>To enforce Dale’s principle (neurons are either excitatory or inhibitory):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioConverter</span><span class="p">,</span> <span class="n">BioConfig</span>
+
+<span class="c1"># Create a model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SimpleModel</span><span class="p">()</span>
+
+<span class="c1"># Create a BioConverter with Dale&#39;s principle enabled</span>
+<span class="n">dales_config</span> <span class="o">=</span> <span class="n">BioConfig</span><span class="p">(</span>
+    <span class="n">apply_dales_principle</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">dales_config</span><span class="p">)</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="c1"># Training loop</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="c1"># Standard training steps</span>
+    <span class="c1"># ...</span>
+
+    <span class="c1"># Enforce Dale&#39;s principle after each update</span>
+    <span class="n">bio_model</span><span class="o">.</span><span class="n">enforce_dales_principle</span><span class="p">()</span>
+
+    <span class="c1"># Continue with other modifications</span>
+    <span class="c1"># ...</span>
+</pre></div>
+</div>
+</section>
+<section id="using-bio-transformations-with-cnns">
+<h2>Using Bio Transformations with CNNs<a class="headerlink" href="#using-bio-transformations-with-cnns" title="Permalink to this heading"></a></h2>
+<p>Bio Transformations works with convolutional neural networks too:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">bio_transformations</span><span class="w"> </span><span class="kn">import</span> <span class="n">BioConverter</span>
+
+<span class="c1"># Define a simple CNN</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleCNN</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pool</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">32</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pool</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span> <span class="o">*</span> <span class="mi">7</span> <span class="o">*</span> <span class="mi">7</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fc1</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc2</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Create and convert the CNN</span>
+<span class="n">cnn_model</span> <span class="o">=</span> <span class="n">SimpleCNN</span><span class="p">()</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">()</span>
+<span class="n">bio_cnn</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">cnn_model</span><span class="p">)</span>
+
+<span class="c1"># Use bio_cnn just like a regular CNN</span>
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting-common-issues">
+<h2>Troubleshooting Common Issues<a class="headerlink" href="#troubleshooting-common-issues" title="Permalink to this heading"></a></h2>
+<p>Here are solutions to common issues you might encounter when using Bio Transformations:</p>
+<section id="runtimeerror-no-gradients-found-for-the-weights">
+<h3>RuntimeError: “No gradients found for the weights”<a class="headerlink" href="#runtimeerror-no-gradients-found-for-the-weights" title="Permalink to this heading"></a></h3>
+<p>This error occurs when calling <code class="docutils literal notranslate"><span class="pre">fuzzy_learning_rates()</span></code>, <code class="docutils literal notranslate"><span class="pre">volume_dependent_lr()</span></code>, or <code class="docutils literal notranslate"><span class="pre">crystallize()</span></code> before performing a backward pass:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Problem:</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+<span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>  <span class="c1"># Error! No gradients yet</span>
+
+<span class="c1"># Solution:</span>
+<span class="n">outputs</span> <span class="o">=</span> <span class="n">bio_model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">criterion</span><span class="p">(</span><span class="n">outputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
+<span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># This generates gradients</span>
+<span class="n">bio_model</span><span class="o">.</span><span class="n">fuzzy_learning_rates</span><span class="p">()</span>  <span class="c1"># Now works correctly</span>
+</pre></div>
+</div>
+</section>
+<section id="valueerror-weight-splitting-gamma-must-evenly-divide-the-number-of-features">
+<h3>ValueError: “weight_splitting_Gamma must evenly divide the number of features”<a class="headerlink" href="#valueerror-weight-splitting-gamma-must-evenly-divide-the-number-of-features" title="Permalink to this heading"></a></h3>
+<p>This occurs when the number of features in a layer is not divisible by <code class="docutils literal notranslate"><span class="pre">weight_splitting_Gamma</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Problem:</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>  <span class="c1"># 15 is not divisible by weight_splitting_Gamma=2</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>  <span class="c1"># Error!</span>
+
+<span class="c1"># Solution 1: Choose a compatible weight_splitting_Gamma</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># 15 is divisible by 3</span>
+
+<span class="c1"># Solution 2: Adjust your model architecture</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>  <span class="c1"># 16 is divisible by 2</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">weight_splitting_Gamma</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="attributeerror-can-not-enforce-dales-principle-without-apply-dales-principle-set-true">
+<h3>AttributeError: “Can not enforce dales principle without apply_dales_principle set True”<a class="headerlink" href="#attributeerror-can-not-enforce-dales-principle-without-apply-dales-principle-set-true" title="Permalink to this heading"></a></h3>
+<p>This occurs when trying to call <code class="docutils literal notranslate"><span class="pre">enforce_dales_principle()</span></code> but Dale’s principle is not enabled:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Problem:</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">()</span>  <span class="c1"># apply_dales_principle defaults to False</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">bio_model</span><span class="o">.</span><span class="n">enforce_dales_principle</span><span class="p">()</span>  <span class="c1"># Error!</span>
+
+<span class="c1"># Solution:</span>
+<span class="n">converter</span> <span class="o">=</span> <span class="n">BioConverter</span><span class="p">(</span><span class="n">apply_dales_principle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bio_model</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">bio_model</span><span class="o">.</span><span class="n">enforce_dales_principle</span><span class="p">()</span>  <span class="c1"># Now works correctly</span>
 </pre></div>
 </div>
 <p>These tutorials should help you get started with Bio Transformations. For more advanced usage and customization options, please refer to the Advanced Usage guide.</p>

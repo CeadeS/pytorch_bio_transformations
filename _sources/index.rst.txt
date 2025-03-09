@@ -54,6 +54,70 @@ Here's a simple example to get you started:
 
    # Use bio_model as you would a regular PyTorch model
 
+Configuring Fuzzy Learning Rates
+^^^^^^^^^^^
+
+.. code-block:: python
+
+   import torch
+   import torch.nn as nn
+   from bio_transformations import BioConverter
+   from bio_transformations.bio_config import BioConfig, Distribution
+
+   # Create a model
+   model = nn.Sequential(
+       nn.Linear(10, 20),
+       nn.ReLU(),
+       nn.Linear(20, 5)
+   )
+
+   # Configure with log-normal distribution
+   config = BioConfig(
+       fuzzy_learning_rate_factor_nu=0.2,
+       fuzzy_lr_distribution=Distribution.LOGNORMAL,
+       fuzzy_lr_min=0.7,
+       fuzzy_lr_max=1.5
+   )
+   converter = BioConverter(config=config)
+   bio_model = converter(model)
+
+   # Or use the weight-adaptive approach
+   config = BioConfig(
+       fuzzy_learning_rate_factor_nu=0.16,
+       fuzzy_lr_distribution=Distribution.WEIGHT_ADAPTIVE,
+   )
+   converter = BioConverter(config=config)
+   bio_model = converter(model)
+
+   # Or try the dynamic temporal approach
+   config = BioConfig(
+       fuzzy_learning_rate_factor_nu=0.16,
+       fuzzy_lr_distribution=Distribution.TEMPORAL,
+       fuzzy_lr_dynamic=True,
+       fuzzy_lr_update_freq=50  # Update every 50 steps
+   )
+   converter = BioConverter(config=config)
+   bio_model = converter(model)
+
+   # Training loop with dynamic updates
+   for epoch in range(100):
+       # Forward pass
+       output = bio_model(inputs)
+       loss = criterion(output, targets)
+
+       # Backward pass
+       optimizer.zero_grad()
+       loss.backward()
+
+       # Apply fuzzy learning rates
+       bio_model.fuzzy_learning_rates()
+
+       # Update fuzzy learning rates if using dynamic strategies
+       bio_model.update_fuzzy_learning_rates()
+
+       optimizer.step()
+
+
 Key Concepts
 ------------
 

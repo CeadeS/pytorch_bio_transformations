@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Biological Concepts &mdash; Bio Transformations 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
-        <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+      <script src="_static/doctools.js?v=888ff710"></script>
+      <script src="_static/sphinx_highlight.js?v=4825356b"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -56,6 +54,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#homeostatic-plasticity">Homeostatic Plasticity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#volume-dependent-plasticity">Volume-Dependent Plasticity</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dale-s-principle">Dale’s Principle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#synaptic-stabilization">Synaptic Stabilization</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
@@ -98,34 +97,60 @@
 <p>In biological neural networks, synapses (the connections between neurons) exhibit a wide range of properties and behaviors. This diversity is crucial for the complex information processing capabilities of the brain.</p>
 <section id="diversity-in-synaptic-plasticity">
 <h3>1. Diversity in Synaptic Plasticity<a class="headerlink" href="#diversity-in-synaptic-plasticity" title="Permalink to this heading"></a></h3>
-<p><strong>Biological Concept</strong>: In the brain, not all synapses change their strength at the same rate or in the same way. Some synapses are more plastic (changeable) than others, and this plasticity can vary over time.</p>
-<p><strong>Implementation</strong>: The <cite>fuzzy_learning_rates()</cite> method in our <cite>BioModule</cite> applies different learning rates to different “synapses” (weights) in the artificial neural network. This mimics the diverse plasticity observed in biological synapses.</p>
+<p><strong>Biological Concept</strong>: In the brain, not all synapses change their strength at the same rate or in the same way. Some synapses are more plastic (changeable) than others, and this plasticity can vary over time and based on different mechanisms.</p>
+<p><strong>Implementation</strong>: The <code class="docutils literal notranslate"><span class="pre">fuzzy_learning_rates()</span></code> method in our <code class="docutils literal notranslate"><span class="pre">BioModule</span></code> applies different learning rates to different “synapses” (weights) in the artificial neural network. These rates can be determined by various distribution strategies:</p>
+<ul class="simple">
+<li><p><strong>Uniform Distribution</strong>: Random variability around a central value</p></li>
+<li><p><strong>Normal Distribution</strong>: Bell-curve distribution of learning rates</p></li>
+<li><p><strong>Log-normal Distribution</strong>: Skewed distribution favoring smaller adjustments with occasional larger changes</p></li>
+<li><p><strong>Gamma/Beta Distributions</strong>: Distributions that model specific biological properties</p></li>
+<li><p><strong>Layer-Adaptive Distribution</strong>: Mimics layer-specific plasticity observed in cortical layers</p></li>
+<li><p><strong>Weight-Adaptive Distribution</strong>: Adjusts learning rates based on weight magnitudes</p></li>
+<li><p><strong>Temporal Distribution</strong>: Evolves learning rates over time, modeling developmental changes</p></li>
+<li><p><strong>Activity-Dependent Distribution</strong>: Adjusts learning rates based on neural activity patterns</p></li>
+</ul>
 </section>
 <section id="spontaneous-spine-remodeling">
 <h3>2. Spontaneous Spine Remodeling<a class="headerlink" href="#spontaneous-spine-remodeling" title="Permalink to this heading"></a></h3>
 <p><strong>Biological Concept</strong>: Dendritic spines, the primary sites of excitatory synapses in the brain, are dynamic structures. They can form, change shape, and disappear over time, even in the absence of explicit learning signals.</p>
-<p><strong>Implementation</strong>: The <cite>rejuvenate_weights()</cite> method simulates this by randomly reinitializing certain weights in the network. This allows for the “formation” of new connections and the “pruning” of others, similar to spine remodeling in the brain.</p>
+<p><strong>Implementation</strong>: The <code class="docutils literal notranslate"><span class="pre">rejuvenate_weights()</span></code> method simulates this by selectively reinitializing weights in the network. The probability of rejuvenation is inversely proportional to weight magnitude, mimicking how smaller, weaker spines are more likely to be pruned and replaced. This allows for the “formation” of new connections and the “pruning” of others, similar to spine remodeling in the brain.</p>
 </section>
 <section id="multi-synaptic-connectivity">
 <h3>3. Multi-synaptic Connectivity<a class="headerlink" href="#multi-synaptic-connectivity" title="Permalink to this heading"></a></h3>
 <p><strong>Biological Concept</strong>: In biological neural networks, multiple synaptic connections often exist between the same pair of neurons. This redundancy can enhance the reliability and flexibility of neural circuits.</p>
-<p><strong>Implementation</strong>: The <cite>add_weight_splitting_step()</cite> method implements this concept by allowing multiple “synapses” (sub-weights) to exist for each connection in the artificial neural network.</p>
+<p><strong>Implementation</strong>: The weight splitting mechanism (controlled by <code class="docutils literal notranslate"><span class="pre">weight_splitting_Gamma</span></code> in the configuration) implements this concept by allowing multiple “synapses” (sub-weights) to exist for each connection in the artificial neural network. This enhances the network’s ability to learn complex patterns through redundant pathways.</p>
 </section>
 </section>
 <section id="homeostatic-plasticity">
 <h2>Homeostatic Plasticity<a class="headerlink" href="#homeostatic-plasticity" title="Permalink to this heading"></a></h2>
 <p><strong>Biological Concept</strong>: Neurons have mechanisms to maintain their activity levels within a functional range, preventing over-excitation or complete silencing. This is crucial for the stability of neural circuits.</p>
-<p><strong>Implementation</strong>: The <cite>scale_grad()</cite> method implements a form of homeostatic plasticity by scaling the gradients of the weights. This helps maintain overall network stability while still allowing for learning.</p>
+<p><strong>Implementation</strong>: Several mechanisms in Bio Transformations implement homeostatic principles:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">crystallize()</span></code> method stabilizes well-optimized weights, preventing further large changes</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">scale_grad()</span></code> method implements synaptic scaling by adjusting gradients</p></li>
+<li><p>Activity-dependent learning rates adapt based on neuron activation patterns</p></li>
+</ul>
 </section>
 <section id="volume-dependent-plasticity">
 <h2>Volume-Dependent Plasticity<a class="headerlink" href="#volume-dependent-plasticity" title="Permalink to this heading"></a></h2>
 <p><strong>Biological Concept</strong>: In the brain, the size (volume) of a synapse is often correlated with its strength and stability. Larger synapses tend to be more stable but less plastic, while smaller synapses are more dynamic.</p>
-<p><strong>Implementation</strong>: The <cite>volume_dependent_lr()</cite> method implements this concept by adjusting learning rates based on the magnitude (analogous to volume) of the weights. Larger weights have smaller, less variable learning rates, while smaller weights have larger, more variable learning rates.</p>
+<p><strong>Implementation</strong>: The <code class="docutils literal notranslate"><span class="pre">volume_dependent_lr()</span></code> method implements this concept by adjusting learning rates based on the magnitude (analogous to volume) of the weights. It applies three key principles:</p>
+<ol class="arabic simple">
+<li><p>Larger weights receive exponentially smaller learning rates</p></li>
+<li><p>Smaller weights receive larger, more variable learning rates</p></li>
+<li><p>There is significant variability in learning rates among weights of similar sizes</p></li>
+</ol>
+<p>This approach mimics the observation that spine size in biological systems strongly correlates with stability and plasticity characteristics.</p>
 </section>
 <section id="dale-s-principle">
 <h2>Dale’s Principle<a class="headerlink" href="#dale-s-principle" title="Permalink to this heading"></a></h2>
-<p><strong>Biological Concept</strong>: Dale’s principle states that a neuron releases the same neurotransmitter(s) at all of its synapses. This introduces certain constraints on how neurons can influence each other.</p>
-<p><strong>Implementation</strong>: The <cite>enforce_dales_principle()</cite> method ensures that all outgoing weights from a given artificial “neuron” have the same sign, mimicking the constraints imposed by Dale’s principle in biological neural networks.</p>
+<p><strong>Biological Concept</strong>: Dale’s principle states that a neuron releases the same neurotransmitter(s) at all of its synapses. This introduces certain constraints on how neurons can influence each other - a neuron is either excitatory or inhibitory, not both.</p>
+<p><strong>Implementation</strong>: The <code class="docutils literal notranslate"><span class="pre">enforce_dales_principle()</span></code> method ensures that all outgoing weights from a given artificial “neuron” have the same sign, mimicking the constraints imposed by Dale’s principle in biological neural networks. The <code class="docutils literal notranslate"><span class="pre">dalian_network_initialization()</span></code> method assigns each neuron to be either excitatory (positive weights) or inhibitory (negative weights).</p>
+</section>
+<section id="synaptic-stabilization">
+<h2>Synaptic Stabilization<a class="headerlink" href="#synaptic-stabilization" title="Permalink to this heading"></a></h2>
+<p><strong>Biological Concept</strong>: In the brain, frequently used synapses tend to become more stable over time, a process sometimes called “crystallization.” This helps preserve important learned patterns while still allowing for adaptation.</p>
+<p><strong>Implementation</strong>: The <code class="docutils literal notranslate"><span class="pre">crystallize()</span></code> method identifies weights with small gradients relative to their magnitude (indicating they are well-optimized) or unusually large gradients (indicating important learning signals) and reduces their effective learning rates. This selectively stabilizes important connections while allowing others to remain plastic.</p>
 <p>By incorporating these biological concepts, Bio Transformations aims to create artificial neural networks that capture some of the complex dynamics observed in biological brains. This bio-inspired approach has the potential to enhance the learning, adaptability, and robustness of artificial neural networks.</p>
 </section>
 </section>
