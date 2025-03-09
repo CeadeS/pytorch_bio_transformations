@@ -6,7 +6,7 @@ import torch.optim as optim
 from torch.nn import functional as F
 
 from bio_transformations import BioConverter, BioModule
-from bio_transformations.bio_config import BioConfig, DEFAULT_BIO_CONFIG
+from bio_transformations.bio_config import BioConfig, DEFAULT_BIO_CONFIG, Distribution
 
 
 class SimpleCNN(nn.Module):
@@ -38,6 +38,140 @@ def initialize_weights(module):
         if module.bias is not None:
             nn.init.constant_(module.bias, 0.1)
 
+
+class SimpleMultiLayerModel(nn.Module):
+    """A simple model with multiple layers for testing."""
+
+    def __init__(self):
+        super().__init__()
+        self.conv1 = nn.Conv2d(3, 6, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(6, 12, kernel_size=3, padding=1)
+        self.fc1 = nn.Linear(12 * 4 * 4, 120)
+        self.fc2 = nn.Linear(120, 84)
+        self.fc3 = nn.Linear(84, 10)
+
+
+
+def test_count_learnable_layers():
+    """Test the _count_learnable_layers method."""
+    converter = BioConverter()
+
+    # Test with empty model (no learnable layers)
+    class EmptyModel(nn.Module):
+        def __init__(self):
+            super().__init__()
+
+
+    empty_model = EmptyModel()
+    assert converter._count_learnable_layers(empty_model) == 0, "Empty model should have 0 learnable layers"
+
+    # Test with single layer model
+    class SingleLayerModel(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.fc = nn.Linear(10, 5)
+
+
+    single_layer_model = SingleLayerModel()
+    assert converter._count_learnable_layers(
+        single_layer_model) == 1, "Single layer model should have 1 learnable layer"
+
+    # Test with multi-layer model
+    multi_layer_model = SimpleMultiLayerModel()
+    assert converter._count_learnable_layers(multi_layer_model) == 5, "Multi-layer model should have 5 learnable layers"
+
+    # Test with nested model
+    class NestedModel(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.inner_model = SingleLayerModel()
+            self.fc = nn.Linear(5, 2)
+
+
+    nested_model = NestedModel()
+    assert converter._count_learnable_layers(nested_model) == 2, "Nested model should have 2 learnable layers"
+
+
+def test_set_layer_indices():
+    """Test the _set_layer_indices method with LAYER_ADAPTIVE distribution."""
+    # Create a model
+    model = SimpleMultiLayerModel()
+
+    # Create a converter with LAYER_ADAPTIVE distribution
+    config = BioConfig(fuzzy_lr_distribution=Distribution.LAYER_ADAPTIVE)
+    converter = BioConverter(config=config)
+
+    # Convert the model
+    converted_model = converter.convert(model)
+
+    # Verify each layer has the correct indices set
+    layers = [
+        converted_model.conv1,
+        converted_model.conv2,
+        converted_model.fc1,
+        converted_model.fc2,
+        converted_model.fc3
+    ]
+
+    for i, layer in enumerate(layers):
+        assert hasattr(layer, 'bio_mod'), f"Layer {i} should have bio_mod"
+        bio_mod = layer.bio_mod
+        assert hasattr(bio_mod.config, 'fuzzy_lr_layer_index'), f"Layer {i} missing fuzzy_lr_layer_index"
+        assert hasattr(bio_mod.config, 'fuzzy_lr_total_layers'), f"Layer {i} missing fuzzy_lr_total_layers"
+
+        # Check if the indices were set correctly
+        assert bio_mod.config.fuzzy_lr_layer_index == i, f"Layer {i} has incorrect layer index"
+        assert bio_mod.config.fuzzy_lr_total_layers == 5, f"Layer {i} has incorrect total_layers"
+
+
+def test_set_layer_indices_non_adaptive():
+    """Test that _set_layer_indices does nothing when not using LAYER_ADAPTIVE distribution."""
+    # Create a model
+    model = SimpleMultiLayerModel()
+
+    # Create a converter with a non-LAYER_ADAPTIVE distribution
+    config = BioConfig(fuzzy_lr_distribution=Distribution.UNIFORM)
+    converter = BioConverter(config=config)
+
+    # Convert the model
+    converted_model = converter.convert(model)
+
+    # Save the current values before calling the method
+    original_values = []
+    for layer in [
+        converted_model.conv1,
+        converted_model.conv2,
+        converted_model.fc1,
+        converted_model.fc2,
+        converted_model.fc3
+    ]:
+        bio_mod = layer.bio_mod
+        if hasattr(bio_mod.config, 'fuzzy_lr_layer_index'):
+            original_values.append(bio_mod.config.fuzzy_lr_layer_index)
+
+    # Call _set_layer_indices directly to ensure coverage
+    converter._set_layer_indices(converted_model)
+
+    # Verify the method is a no-op for non-LAYER_ADAPTIVE distributions
+    # The values should not change after calling _set_layer_indices
+    index = 0
+    for layer in [
+        converted_model.conv1,
+        converted_model.conv2,
+        converted_model.fc1,
+        converted_model.fc2,
+        converted_model.fc3
+    ]:
+        bio_mod = layer.bio_mod
+        if hasattr(bio_mod.config, 'fuzzy_lr_layer_index'):
+            # The value should be unchanged after calling _set_layer_indices
+            assert bio_mod.config.fuzzy_lr_layer_index == original_values[index], \
+                "Layer indices should not change for non-LAYER_ADAPTIVE distribution"
+            index += 1
+
+    # Also verify that calling the method doesn't crash
+    # (this is the main thing we're testing in a no-op case)
+    converter._set_layer_indices(converted_model)
 
 def test_bioconverter_default_config():
     converter = BioConverter()
@@ -402,3 +536,66 @@ def test_instance_conversion():
         20, 10), f"Expected linear1 weight shape (20, 10), but got {converted_model.linear1.weight.shape}"
     assert converted_model.linear2.weight.shape == (
         5, 20), f"Expected linear2 weight shape (5, 20), but got {converted_model.linear2.weight.shape}"
+
+
+def test_activity_tracking_recursion_prevention():
+    """Test that activity tracking correctly prevents infinite recursion with the else branch."""
+
+    # Create a custom Linear layer that tracks call counts
+    class TrackedLinear(nn.Linear):
+        def __init__(self, in_features, out_features):
+            super().__init__(in_features, out_features)
+            self.forward_calls = 0
+            self.update_calls = 0
+
+        def forward(self, x):
+            self.forward_calls += 1
+            return super().forward(x)
+
+    # Create an instance of our custom layer
+    layer = TrackedLinear(10, 10)
+
+    # Create a BioConverter with activity-dependent distribution
+    config = BioConfig(
+        fuzzy_lr_distribution=Distribution.ACTIVITY,
+        fuzzy_lr_dynamic=True
+    )
+
+    # Convert the model
+    converter = BioConverter(config=config)
+    bio_layer = converter.convert(layer)
+
+    # Now bio_layer should have a bio_mod attribute
+    assert hasattr(bio_layer, 'bio_mod'), "bio_mod attribute not created during conversion"
+
+    # Create a custom update_fuzzy_learning_rates that tracks calls
+    original_update = bio_layer.bio_mod.update_fuzzy_learning_rates
+
+    def tracking_update(x=None):
+        bio_layer.update_calls += 1
+        return original_update(x)
+
+    bio_layer.bio_mod.update_fuzzy_learning_rates = tracking_update
+
+    # Manually set up the recursion test
+    bio_layer._tracking_activity = True  # Simulate already tracking
+
+    # Call the forward method - should trigger the else branch
+    x = torch.randn(2, 10)
+    bio_layer(x)
+
+    # Verify we called forward but didn't call update_fuzzy_learning_rates
+    assert bio_layer.forward_calls == 1
+    assert bio_layer.update_calls == 0
+
+    # Reset flags and call normally
+    bio_layer._tracking_activity = False
+    bio_layer.forward_calls = 0
+    bio_layer.update_calls = 0
+
+    # Now call again - should call both forward and update
+    bio_layer(x)
+
+    # Verify both were called
+    assert bio_layer.forward_calls == 1
+    assert bio_layer.update_calls == 1
