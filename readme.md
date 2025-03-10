@@ -159,52 +159,109 @@ print(output)
 ```python
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.optim as optim
+from torchvision import datasets, transforms
 from bio_transformations import BioConverter
 
-# Define a simple model
-model = nn.Sequential(
-    nn.Linear(784, 128),
-    nn.ReLU(),
-    nn.Linear(128, 10)
-)
+# Define a simple CNN for MNIST
+class MNISTNet(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
+        self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
+        self.fc1 = nn.Linear(320, 50)
+        self.fc2 = nn.Linear(50, 10)
 
-# Convert the model to use bio-inspired mechanisms
-converter = BioConverter(
-    fuzzy_learning_rate_factor_nu=0.16,  # Controls variability in learning rates
-    crystal_thresh=4.5e-05,              # Threshold for synapse crystallization
-    rejuvenation_parameter_dre=8.0       # Controls the rate of weight rejuvenation
-)
-bio_model = converter(model)
+    def forward(self, x):
+        x = F.relu(F.max_pool2d(self.conv1(x), 2))
+        x = F.relu(F.max_pool2d(self.conv2(x), 2))
+        x = x.view(-1, 320)
+        x = F.relu(self.fc1(x))
+        x = F.log_softmax(self.fc2(x), dim=1)
+        return x
 
-# Define loss function and optimizer
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(bio_model.parameters(), lr=0.01)
-
-# Example training loop
-def train(data_loader, epochs=5):
-    for epoch in range(epochs):
-        for inputs, targets in data_loader:
+def main():
+    # Training settings
+    batch_size = 64
+    epochs = 3
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
+    # Prepare MNIST dataset
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+    ])
+    
+    train_dataset = datasets.MNIST('./data', train=True, download=True, transform=transform)
+    test_dataset = datasets.MNIST('./data', train=False, transform=transform)
+    
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=1000)
+    
+    # Create a bio-inspired model
+    model = MNISTNet().to(device)
+    converter = BioConverter(
+        fuzzy_learning_rate_factor_nu=0.16,  # Controls learning rate diversity
+        dampening_factor=0.7,                # For synaptic stabilization
+        crystal_thresh=4.5e-05,              # Threshold for crystallization
+        rejuvenation_parameter_dre=10.0      # Controls weight rejuvenation
+    )
+    bio_model = converter(model)
+    
+    # Define optimizer
+    optimizer = optim.SGD(bio_model.parameters(), lr=0.01)
+    
+    # Training loop
+    for epoch in range(1, epochs + 1):
+        # Training phase
+        bio_model.train()
+        for batch_idx, (data, target) in enumerate(train_loader):
+            data, target = data.to(device), target.to(device)
+            
             # Forward pass
-            outputs = bio_model(inputs)
-            loss = criterion(outputs, targets)
+            optimizer.zero_grad()
+            output = bio_model(data)
+            loss = F.nll_loss(output, target)
             
             # Backward pass
-            optimizer.zero_grad()
             loss.backward()
             
-            # Apply bio-inspired mechanisms
-            bio_model.volume_dependent_lr()   # Adjust learning rates based on weight size
-            bio_model.fuzzy_learning_rates()  # Apply diverse learning rates
-            bio_model.crystallize()           # Stabilize well-optimized weights
+            # Apply bio-inspired modifications
+            bio_model.fuzzy_learning_rates()      # Apply diverse learning rates
+            
+            if batch_idx % 100 == 0:
+                bio_model.crystallize()           # Stabilize important weights periodically
             
             # Update weights
             optimizer.step()
             
-        # Periodically apply weight rejuvenation (e.g., once per epoch)
+            # Print progress
+            if batch_idx % 100 == 0:
+                print(f'Train Epoch: {epoch} [{batch_idx * len(data)}/{len(train_loader.dataset)}]'
+                      f' Loss: {loss.item():.4f}')
+        
+        # Apply weight rejuvenation at the end of each epoch
         bio_model.rejuvenate_weights()
         
-        print(f"Epoch {epoch+1}/{epochs} completed")
+        # Testing phase
+        bio_model.eval()
+        test_loss = 0
+        correct = 0
+        with torch.no_grad():
+            for data, target in test_loader:
+                data, target = data.to(device), target.to(device)
+                output = bio_model(data)
+                test_loss += F.nll_loss(output, target, reduction='sum').item()
+                pred = output.argmax(dim=1, keepdim=True)
+                correct += pred.eq(target.view_as(pred)).sum().item()
+                
+        test_loss /= len(test_loader.dataset)
+        accuracy = 100. * correct / len(test_loader.dataset)
+        print(f'Test set: Average loss: {test_loss:.4f}, Accuracy: {accuracy:.2f}%')
+
+if __name__ == "__main__":
+    main()
 ```
 
 ## Advanced Usage
