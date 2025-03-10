@@ -30,7 +30,11 @@ This project is primarily targeted at researchers and developers in the fields o
 ## Getting Started
 
 ```bash
+# We recommend to create a new environment
+conda create -n biomod python=3.11
+conda activate biomod
 # Install the package
+pip install numpy torch torchvision torchaudio
 pip install pytorch_bio_transformations
 
 # Convert your PyTorch model in just 3 lines
@@ -69,33 +73,39 @@ These methods work in concert to create a learning process that more closely res
 
 ## Installation Instructions
 
+```bash
+# We recommend to create a new environment
+conda create -n biomod python=3.11
+conda activate biomod
+```
+
 You can install Bio Transformations using pip or from source.
-### Install PyTorch
+### Install PyTorch [PyTorch.org](https://pytorch.org) 
 
 #### You can install PyTorch on Linux with pip:
 GPU/CUDA12.4: 
 ```bash
-pip3 install torch torchvision torchaudio
+pip install torch torchvision torchaudio
 ```
 CPU: 
 ```bash
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
 
 #### On Windows with pip
 GPU/CUDA12.4: 
 ```bash
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
 ```
 CPU: 
 ```bash
-pip3 install torch torchvision torchaudio
+pip install torch torchvision torchaudio
 ```
 
 #### On Mac with pip
 
 ```bash
-pip3 install torch torchvision torchaudio
+pip install torch torchvision torchaudio
 ```
 ### Installing pytorch_bio_transfomrations
 #### Option 1: Using pip (Simplest Method)
@@ -111,12 +121,6 @@ git clone https://github.com/CeadeS/pytorch_bio_transformations
 cd pytorch_bio_transformations
 pip install -r requirements.txt
 pip install -e .
-```
-
-#### Verifying Installation
-
-```bash
-python -c "import bio_transformations; print(bio_transformations.__version__)"
 ```
 
 ## Usage
