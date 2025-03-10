@@ -12,14 +12,14 @@ Please visit the [Documentation](https://ceades.github.io/pytorch_bio_transforma
 ## Table of Contents
 1. [Project Description](#project-description)
 2. [Getting Started](#getting-started)
-3[Key Features](#key-features)
-4[Installation Instructions](#installation-instructions)
-5[Usage](#usage)
-6[Advanced Usage](#advanced-usage)
-7[Extending Functionality](#extending-functionality)
-8[Contributing Guidelines](#contributing-guidelines)
-9[License Information](#license-information)
-10[Publication](#publication)
+3. [Key Features](#key-features)
+4. [Installation Instructions](#installation-instructions)
+5. [Usage](#usage)
+6. [Advanced Usage](#advanced-usage)
+7. [Extending Functionality](#extending-functionality)
+8. [Contributing Guidelines](#contributing-guidelines)
+9. [License Information](#license-information)
+10. [Publication](#publication)
 
 ## Project Description
 
